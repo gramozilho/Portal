@@ -1,0 +1,89 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://World1.tscn" type="PackedScene" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Portal2.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Portal2.tres" type="Material" id=6]
+[ext_resource path="res://Mirror.gd" type="Script" id=7]
+[ext_resource path="res://Camera.gd" type="Script" id=8]
+
+[sub_resource type="PlaneMesh" id=1]
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 0.5, 0.5, 0.3 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.160784, 0.407843, 0.752941, 1 )
+
+[node name="Main" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.258954, 0, 0.96589, 0, 1, 0, -0.96589, 0, 0.258954, 1.92185, 9.07885, -0.626828 )
+
+[node name="Camera" parent="Player/CameraAnchor" index="0"]
+script = ExtResource( 8 )
+
+[node name="World1" parent="." instance=ExtResource( 3 )]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+
+[node name="Control" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 512.0
+margin_bottom = 300.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Control"]
+modulate = Color( 1, 1, 1, 0.0392157 )
+position = Vector2( 500, 300 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+
+[node name="Portal2" parent="." instance=ExtResource( 5 )]
+transform = Transform( 0.0182376, 0, 0.999834, 0, 1, 0, -0.999834, 0, 0.0182376, 0, 8.60397, 0 )
+visible = false
+
+[node name="Mirror" type="MeshInstance" parent="."]
+transform = Transform( -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0, 1, -0.924199, 8.70582, -0.00365591 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 6 )
+script = ExtResource( 7 )
+
+[node name="DummyCam" type="Spatial" parent="Mirror"]
+transform = Transform( -4.21889e-08, -1, -1.57363e-07, -0.258954, 1.62921e-07, -0.96589, -0.96589, 0, 0.258954, -0.37303, -2.84605, -0.623172 )
+
+[node name="Viewport" type="Viewport" parent="Mirror"]
+size = Vector2( 1024, 600 )
+
+[node name="Camera" type="Camera" parent="Mirror/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.814122, 8.70582, 3.93241 )
+cull_mask = 1048573
+current = true
+
+[node name="Cambase" type="Spatial" parent="Mirror"]
+
+[node name="Camera" type="Camera" parent="Mirror/Cambase"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.292328, 4.39475 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 0.396603, 0, -0.91799, 0, 1, 0, 0.91799, 0, 0.396603, 0.943515, 7.9457, 0.771299 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 0.396603, 0, -0.91799, 0, 1, 0, 0.91799, 0, 0.396603, -1.5034, 7.9457, -0.70865 )
+layers = 2
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+[connection signal="new_portal" from="Player" to="." method="_on_KinematicBody_new_portal"]
+
+[editable path="Player"]
