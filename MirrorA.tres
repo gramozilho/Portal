@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[sub_resource type="Shader" id=1]
+resource_local_to_scene = true
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D refl_tx;
+void fragment() {
+	ALBEDO = texture(refl_tx, vec2(1.0 - SCREEN_UV.x, SCREEN_UV.y)).rgb;
+}"
+
+[sub_resource type="ViewportTexture" id=2]
+viewport_path = NodePath("Mirror2/Viewport")
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/refl_tx = SubResource( 2 )
