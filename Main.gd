@@ -3,7 +3,9 @@ extends Spatial
 const portal = preload("res://Portal.tscn")
 var typeA = true
 var portal_list = []
-var last_portal_is_A = false
+#var last_portal_is_A = false
+var portal_X
+var rotation_vec = Vector3()
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -15,8 +17,60 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("ui_restart"):
 		get_tree().reload_current_scene()
 
-func _on_KinematicBody_new_portal(coord, orient):
-	pass
+func _on_KinematicBody_new_portal(coord, orient, is_portal_A):
+	print('1 New portal at: ', coord, orient)
+	if is_portal_A:
+		# Move portal B
+		portal_X = $PortalHolder/Mirror
+	else:
+		# Move portal A
+		portal_X = $PortalHolder/Mirror2
+	
+	portal_X.global_transform = Transform()
+	#orient = Vector3(orient[2], orient[0], orient[1])
+	var normal_vec
+	if (orient[1] > 0.5) or (orient[1] < -0.5):
+		print('Up/down')
+		portal_X.look_at_from_position(coord, coord + orient, Vector3(0, 1, 0))
+		portal_X.global_transform *= Transform.rotated(Vector3(1, 0, 0), -PI/2)
+	elif (orient[0] > 0.5) or (orient[0] < -0.5):
+		print('right')
+		portal_X.look_at_from_position(coord, coord + orient, Vector3(0, 0, 1))
+		portal_X.global_transform *= Transform.rotated(Vector3(1,0,0), -PI/2)
+	else:
+		print('left')
+		normal_vec = Vector3(1,0,0)
+		portal_X.look_at_from_position(coord, coord + orient, normal_vec)
+		portal_X.global_transform *= Transform.rotated(normal_vec, -PI/2)
+		
+	portal_X.global_transform.origin = coord + orient*.001
+	#last_portal_is_A = !last_portal_is_A
+
+func testee(coord, orient, portal_X):
+	if orient[1] < -0.9:
+		print('-z')
+		portal_X.global_transform *= Transform().rotated(Vector3(0,0,1), PI)
+	elif orient[2] > 0.9:
+		print('+x')
+		portal_X.global_transform.basis *= Transform().rotated(Vector3(1,0,0), PI/2)
+	elif orient[2] < -0.9:
+		print('-x')
+		portal_X.global_transform.basis *= Transform().rotated(Vector3(1,0,0), -PI/2)
+		
+		#rotation_vec = Vector3(-1, 0, 0)
+	#portal_X.global_transform *= Transform().rotated(rotation_vector, -PI/2)
+	#orient = Vector3(orient[2], orient[0], orient[1])
+	var normal_vec = Vector3(0, 1, 0)
+	#var extra_rotation = Vector3(0, 0, -PI/2)
+	#if orient[1] > 0.5 or orient[1] < .5:
+	#	extra_rotation = Vector3(0, PI/2, -PI/2)
+	#	print('aaaaaa', portal_X.rotation)
+	#	normal_vec = Vector3(0, 0, 1)
+	#portal_X.look_at_from_position(coord, coord - orient, normal_vec)
+	#portal_X.global_transform *= Transform().rotated(orient, PI/2)
+	#portal_X.global_transform = portal_X.global_transform * Transform().rotated(Vector3(1,1,0), PI/2)
+	#portal_X.rotation = orient.normalized()
+	#last_portal_is_A = !last_portal_is_A
 
 func _on_KinematicBody_new_portal_old(coord, orient):
 	var new_portal = portal.instance()
@@ -26,6 +80,7 @@ func _on_KinematicBody_new_portal_old(coord, orient):
 	#print('aaaaaa', new_portal.normal_vec)
 		normal_vec = Vector3(0, 0, 1)
 	new_portal.look_at_from_position(coord, coord - orient, normal_vec)
+	print(orient)
 	new_portal.typeA = typeA
 	typeA = !typeA
 	# connect teleport signal
@@ -42,7 +97,7 @@ func _on_KinematicBody_new_portal_old(coord, orient):
 	
 	self.add_child(new_portal)
 
-func teleport(pType):
+func teleport_old(pType):
 	if len(portal_list) > 1:
 		# Find typeA on listvar 
 		var idxB = 0
@@ -72,3 +127,27 @@ func teleport(pType):
 		
 		# Update render
 		
+
+
+func _on_Player_new_portal():
+	pass # Replace with function body.
+
+
+func _on_Area_body_entered(body):
+	teleport($PortalHolder/Mirror, $PortalHolder/Mirror2)
+
+func teleport(original_portal, target_portal):
+		var target_pos = target_portal.global_transform.origin 
+		print('4 ', target_portal.rotation)
+		var target_orient = target_portal.rotation.normalized()
+		$Player_v2.global_transform.origin = target_pos + target_orient * 1
+		
+		# Rotate
+		var dir_rot = $Player_v2/CameraAnchor.rotation.y + 120 # keep original rot
+		dir_rot += -(1-original_portal.rotation.normalized().dot(target_portal.rotation.normalized()))*90 # account for different portal angles
+		print('a: ', original_portal.rotation.normalized().dot(target_portal.rotation.normalized()))
+		$Player_v2/CameraAnchor.rotate_y(deg2rad(dir_rot))
+
+
+func _on_Area2_body_entered(body):
+	teleport($PortalHolder/Mirror2, $PortalHolder/Mirror)

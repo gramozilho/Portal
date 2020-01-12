@@ -9,7 +9,7 @@ func _ready():
 
 func update_cull_mask(idx):
 	colliding_object = get_node("RayCast").get_collider()
-	if colliding_object:
+	if false and colliding_object:
 		colliding_object = colliding_object.get_parent()
 		#print('Portal ', idx, 'colliding with ', colliding_object.name)
 		if colliding_object.is_in_group('hide'):

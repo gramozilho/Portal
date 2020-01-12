@@ -11,6 +11,8 @@ var camera
 var camera_angle
 var mouse_sensibility = 0.2
 
+onready var raycast = get_node("CameraAnchor/Camera/RayCast")
+
 signal new_portal
 
 func _ready():
@@ -28,17 +30,15 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_right"):
 		dir += camera.basis[0]
 	if Input.is_action_just_pressed("click"):
-		print('Portal spawn')
-		if get_node("CameraAnchor/Camera/RayCast").is_colliding():
-			var coord = get_node("CameraAnchor/Camera/RayCast").get_collision_point()
-			var orient = get_node("CameraAnchor/Camera/RayCast").get_collision_normal()
-			print(orient)
-			
-			emit_signal('new_portal', coord, orient)
-			
-			#var space_state = get_world().direct_space_state
-			#var result = space_state.intersect_ray(Vector3(0, 0, 0), Vector3(50, 100, 0))
-			#print(result)
+		if raycast.is_colliding():
+			var coord = raycast.get_collision_point()
+			var orient = raycast.get_collision_normal()
+			emit_signal('new_portal', coord, orient, true)
+	if Input.is_action_just_pressed("click2"):
+		if raycast.is_colliding():
+			var coord = raycast.get_collision_point()
+			var orient = raycast.get_collision_normal()
+			emit_signal('new_portal', coord, orient, false)
 	
 	dir.y = 0
 	dir = dir.normalized()

@@ -2,4 +2,4 @@
 
 [resource]
 flags_transparent = true
-albedo_color = Color( 0.282353, 0.709804, 1, 0.584314 )
+albedo_color = Color( 0.952941, 1, 1, 1 )

@@ -24,14 +24,19 @@ func update_cam(main_cam_transform):
 	$Mirror.scale.y *= -1
 	$Mirror2.scale.y *= -1
 
+	# Orient cameras
 	mirror_cam_A.global_transform = mirror_B.global_transform * mirror_A.global_transform.affine_inverse() * dummy_cam_A.global_transform
 	mirror_cam_B.global_transform = mirror_A.global_transform * mirror_B.global_transform.affine_inverse() * dummy_cam_B.global_transform
+	
+	# Position cameras
+	mirror_cam_A.global_transform.origin = mirror_B.global_transform.origin
+	mirror_cam_B.global_transform.origin = mirror_A.global_transform.origin
 	
 	mirror_cam_A.global_transform.basis.x *= -1
 	mirror_cam_B.global_transform.basis.x *= -1
 	
-	mirror_cam_A.update_cull_mask(2)
-	mirror_cam_B.update_cull_mask(3)
+	#mirror_cam_A.update_cull_mask(2)
+	#mirror_cam_B.update_cull_mask(3)
 
 func update_cam_2(main_cam_transform):
 	#get_tree().call_group("mirrors", "transform_coord", main_cam_transform)
@@ -69,5 +74,5 @@ func update_cam_2(main_cam_transform):
 
 
 func _on_Player_new_portal(coord, orient):
-	print(coord, orient)
+	pass #print(coord, orient)
 
