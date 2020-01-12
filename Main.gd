@@ -3,6 +3,7 @@ extends Spatial
 const portal = preload("res://Portal.tscn")
 var typeA = true
 var portal_list = []
+var last_portal_is_A = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -14,8 +15,10 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("ui_restart"):
 		get_tree().reload_current_scene()
 
-
 func _on_KinematicBody_new_portal(coord, orient):
+	pass
+
+func _on_KinematicBody_new_portal_old(coord, orient):
 	var new_portal = portal.instance()
 	new_portal.global_transform.origin = coord
 	var normal_vec = Vector3(0, 1, 0)

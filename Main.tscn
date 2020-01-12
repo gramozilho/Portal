@@ -1,20 +1,29 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://World1.tscn" type="PackedScene" id=3]
 [ext_resource path="res://icon.png" type="Texture" id=4]
-[ext_resource path="res://Portal2.tscn" type="PackedScene" id=5]
 [ext_resource path="res://MirrorATexture.tres" type="Material" id=6]
 [ext_resource path="res://MirrorNew.gd" type="Script" id=7]
 [ext_resource path="res://Camera.gd" type="Script" id=8]
 [ext_resource path="res://MirrorB.tres" type="Material" id=9]
+[ext_resource path="res://MirrorCull.gd" type="Script" id=10]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 0.5, 0.5, 0.3 )
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.160784, 0.407843, 0.752941, 1 )
+
+[sub_resource type="ConcavePolygonShape" id=8]
+data = PoolVector3Array( -0.25, 0.25, 0.15, 0.25, 0.25, 0.15, -0.25, -0.25, 0.15, 0.25, 0.25, 0.15, 0.25, -0.25, 0.15, -0.25, -0.25, 0.15, 0.25, 0.25, -0.15, -0.25, 0.25, -0.15, 0.25, -0.25, -0.15, -0.25, 0.25, -0.15, -0.25, -0.25, -0.15, 0.25, -0.25, -0.15, 0.25, 0.25, 0.15, 0.25, 0.25, -0.15, 0.25, -0.25, 0.15, 0.25, 0.25, -0.15, 0.25, -0.25, -0.15, 0.25, -0.25, 0.15, -0.25, 0.25, -0.15, -0.25, 0.25, 0.15, -0.25, -0.25, -0.15, -0.25, 0.25, 0.15, -0.25, -0.25, 0.15, -0.25, -0.25, -0.15, 0.25, 0.25, 0.15, -0.25, 0.25, 0.15, 0.25, 0.25, -0.15, -0.25, 0.25, 0.15, -0.25, 0.25, -0.15, 0.25, 0.25, -0.15, -0.25, -0.25, 0.15, 0.25, -0.25, 0.15, -0.25, -0.25, -0.15, 0.25, -0.25, 0.15, 0.25, -0.25, -0.15, -0.25, -0.25, -0.15 )
+
+[sub_resource type="ConcavePolygonShape" id=9]
+data = PoolVector3Array( -0.25, 0.25, 0.15, 0.25, 0.25, 0.15, -0.25, -0.25, 0.15, 0.25, 0.25, 0.15, 0.25, -0.25, 0.15, -0.25, -0.25, 0.15, 0.25, 0.25, -0.15, -0.25, 0.25, -0.15, 0.25, -0.25, -0.15, -0.25, 0.25, -0.15, -0.25, -0.25, -0.15, 0.25, -0.25, -0.15, 0.25, 0.25, 0.15, 0.25, 0.25, -0.15, 0.25, -0.25, 0.15, 0.25, 0.25, -0.15, 0.25, -0.25, -0.15, 0.25, -0.25, 0.15, -0.25, 0.25, -0.15, -0.25, 0.25, 0.15, -0.25, -0.25, -0.15, -0.25, 0.25, 0.15, -0.25, -0.25, 0.15, -0.25, -0.25, -0.15, 0.25, 0.25, 0.15, -0.25, 0.25, 0.15, 0.25, 0.25, -0.15, -0.25, 0.25, 0.15, -0.25, 0.25, -0.15, 0.25, 0.25, -0.15, -0.25, -0.25, 0.15, 0.25, -0.25, 0.15, -0.25, -0.25, -0.15, 0.25, -0.25, 0.15, 0.25, -0.25, -0.15, -0.25, -0.25, -0.15 )
+
+[sub_resource type="ConcavePolygonShape" id=10]
+data = PoolVector3Array( -0.25, 0.25, 0.15, 0.25, 0.25, 0.15, -0.25, -0.25, 0.15, 0.25, 0.25, 0.15, 0.25, -0.25, 0.15, -0.25, -0.25, 0.15, 0.25, 0.25, -0.15, -0.25, 0.25, -0.15, 0.25, -0.25, -0.15, -0.25, 0.25, -0.15, -0.25, -0.25, -0.15, 0.25, -0.25, -0.15, 0.25, 0.25, 0.15, 0.25, 0.25, -0.15, 0.25, -0.25, 0.15, 0.25, 0.25, -0.15, 0.25, -0.25, -0.15, 0.25, -0.25, 0.15, -0.25, 0.25, -0.15, -0.25, 0.25, 0.15, -0.25, -0.25, -0.15, -0.25, 0.25, 0.15, -0.25, -0.25, 0.15, -0.25, -0.25, -0.15, 0.25, 0.25, 0.15, -0.25, 0.25, 0.15, 0.25, 0.25, -0.15, -0.25, 0.25, 0.15, -0.25, 0.25, -0.15, 0.25, 0.25, -0.15, -0.25, -0.25, 0.15, 0.25, -0.25, 0.15, -0.25, -0.25, -0.15, 0.25, -0.25, 0.15, 0.25, -0.25, -0.15, -0.25, -0.25, -0.15 )
 
 [sub_resource type="PlaneMesh" id=3]
 
@@ -30,13 +39,16 @@ albedo_color = Color( 0.160784, 0.407843, 0.752941, 1 )
 script = ExtResource( 2 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.258954, 0, 0.96589, 0, 1, 0, -0.96589, 0, 0.258954, 1.92185, 9.07885, -0.626828 )
+transform = Transform( 0.258954, 0, 0.96589, 0, 1, 0, -0.96589, 0, 0.258954, 0.143399, 2.32023, -0.626828 )
+
+[node name="MeshInstance" parent="Player/Body" index="0"]
+layers = 7
 
 [node name="Camera" parent="Player/CameraAnchor" index="0"]
 script = ExtResource( 8 )
 
 [node name="World1" parent="." instance=ExtResource( 3 )]
-transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
 
 [node name="Control" type="Control" parent="."]
 anchor_left = 0.5
@@ -57,25 +69,40 @@ position = Vector2( 500, 300 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 4 )
 
-[node name="Portal2" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.0182376, 0, 0.999834, 0, 1, 0, -0.999834, 0, 0.0182376, 0, 8.60397, 0 )
-visible = false
-
 [node name="MeshInstance2" type="MeshInstance" parent="."]
-transform = Transform( 0.396603, 0, -0.91799, 0, 3.23085, 0, 0.91799, 0, 0.396603, -0.764653, 8.5695, 1.05819 )
+transform = Transform( 0.396603, 0, -0.91799, 0, 3.23085, 0, 0.91799, 0, 0.396603, -0.764653, 8.5695, 0.688256 )
+layers = 7
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
-[node name="MeshInstance4" type="MeshInstance" parent="."]
-transform = Transform( 0.396603, 0, -0.91799, 0, 2.24158, 0, 0.91799, 0, 0.396603, -3.30439, 7.9457, -2.86247 )
+[node name="StaticBody" type="StaticBody" parent="MeshInstance2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance2/StaticBody"]
+shape = SubResource( 8 )
+
+[node name="Obstacle" type="MeshInstance" parent="." groups=[
+"hide",
+]]
+transform = Transform( -1.62921e-07, 0, 1, 0, 3.25424, 0, -2.51028, 0, -4.08977e-07, -1.09096, 8.61363, 0.0829594 )
+layers = 7
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
-[node name="MeshInstance3" type="MeshInstance" parent="."]
-transform = Transform( 0.396603, 0, -0.91799, 0, 1, 0, 0.91799, 0, 0.396603, -1.5034, 7.9457, -0.70865 )
-layers = 2
+[node name="StaticBody" type="StaticBody" parent="Obstacle"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Obstacle/StaticBody"]
+shape = SubResource( 9 )
+
+[node name="MeshInstance5" type="MeshInstance" parent="."]
+transform = Transform( 0.396603, 0, -0.91799, 0, 1, 0, 0.91799, 0, 0.396603, -0.509445, 7.9457, -0.70865 )
+layers = 7
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance5"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance5/StaticBody"]
+shape = SubResource( 10 )
 
 [node name="PortalHolder" type="Spatial" parent="." groups=[
 "mirrors",
@@ -83,9 +110,10 @@ material/0 = SubResource( 2 )
 script = ExtResource( 7 )
 
 [node name="Mirror" type="MeshInstance" parent="PortalHolder" groups=[
+"hide",
 "mirrors",
 ]]
-transform = Transform( -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0, 1, -0.924199, 8.70582, -0.00365591 )
+transform = Transform( -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0, 1, -1.8, 1, 0.05 )
 mesh = SubResource( 3 )
 material/0 = ExtResource( 6 )
 
@@ -94,7 +122,6 @@ transform = Transform( -4.21889e-08, -1, -1.57363e-07, -0.258954, 1.62921e-07, -
 
 [node name="MeshInstance2" type="MeshInstance" parent="PortalHolder/Mirror/DummyCam"]
 transform = Transform( 0.112899, 5.7685e-08, -0.0652244, 1.10017e-08, 0.683651, 4.10359e-08, -0.0652244, 2.15163e-07, -0.112899, -1.47399, 1.90735e-06, -5.49794 )
-layers = 2
 mesh = SubResource( 4 )
 material/0 = null
 
@@ -102,20 +129,25 @@ material/0 = null
 size = Vector2( 1024, 600 )
 
 [node name="Camera" type="Camera" parent="PortalHolder/Mirror/Viewport"]
-transform = Transform( 0.258954, 0, 0.96589, 0, 1, 0, -0.96589, 0, 0.258954, 1.92185, 9.07885, -0.626828 )
-cull_mask = 1048573
+transform = Transform( 0.258954, 0, 0.96589, 0, 1, 0, -0.96589, 0, 0.258954, 3.74629, 9.07885, -0.626828 )
+cull_mask = 2
 current = true
+script = ExtResource( 10 )
 
 [node name="MeshInstance" type="MeshInstance" parent="PortalHolder/Mirror/Viewport/Camera"]
-transform = Transform( 0.130386, 0, 0, 0, 0.683651, 0, 0, 0, 0.130386, 0, 0, 0 )
-layers = 2
+transform = Transform( 0.130386, 0, -3.72529e-09, 0, 0.398556, 0, 3.72529e-09, 0, 0.130386, 0, 0, 0 )
 mesh = SubResource( 5 )
 material/0 = null
 
+[node name="RayCast" type="RayCast" parent="PortalHolder/Mirror/Viewport/Camera"]
+enabled = true
+cast_to = Vector3( 0, 0, -1000 )
+
 [node name="Mirror2" type="MeshInstance" parent="PortalHolder" groups=[
+"hide",
 "mirrors",
 ]]
-transform = Transform( 9.88366e-09, -0.0606655, -0.998158, -1, -1.62921e-07, 1.42109e-14, -1.62621e-07, 0.998158, -0.0606655, 1.03677, 8.70582, -2.81596 )
+transform = Transform( 2.65431e-14, -1.62921e-07, 1, -1, -1.62921e-07, 0, 1.62921e-07, -1, -1.62921e-07, 0, 1, 1.73 )
 mesh = SubResource( 3 )
 material/0 = ExtResource( 9 )
 
@@ -124,7 +156,6 @@ transform = Transform( 1.43276e-07, -1, 7.75566e-08, 0.879424, 1.62921e-07, 0.47
 
 [node name="MeshInstance2" type="MeshInstance" parent="PortalHolder/Mirror2/DummyCam"]
 transform = Transform( -0.350734, -3.55271e-15, -1.86265e-09, -7.10543e-15, -0.118099, -4.44089e-16, 0, -1.77636e-15, -0.0430299, 0, 0, 0 )
-layers = 2
 mesh = SubResource( 6 )
 material/0 = null
 
@@ -133,14 +164,22 @@ size = Vector2( 1024, 600 )
 
 [node name="Camera" type="Camera" parent="PortalHolder/Mirror2/Viewport"]
 transform = Transform( 0.258954, 0, 0.96589, 0, 1, 0, -0.96589, 0, 0.258954, 1.92185, 9.07885, -0.626828 )
-cull_mask = 1048573
+cull_mask = 4
 current = true
+script = ExtResource( 10 )
 
 [node name="MeshInstance" type="MeshInstance" parent="PortalHolder/Mirror2/Viewport/Camera"]
 transform = Transform( 0.350734, 0, 0, 0, 0.118099, 0, 0, 0, 0.0430299, 0, 0, 0 )
-layers = 2
 mesh = SubResource( 7 )
 material/0 = null
+
+[node name="RayCast" type="RayCast" parent="PortalHolder/Mirror2/Viewport/Camera"]
+enabled = true
+cast_to = Vector3( 0, 0, -1000 )
+
+[node name="TestCamera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21169, 1.79879 )
+[connection signal="new_portal" from="Player" to="PortalHolder" method="_on_Player_new_portal"]
 [connection signal="new_portal" from="Player" to="." method="_on_KinematicBody_new_portal"]
 
 [editable path="Player"]
