@@ -11,7 +11,7 @@ void fragment() {
 }"
 
 [sub_resource type="ViewportTexture" id=2]
-viewport_path = NodePath("MirrorB/Viewport")
+viewport_path = NodePath("MirrorA/Viewport")
 
 [resource]
 resource_local_to_scene = true

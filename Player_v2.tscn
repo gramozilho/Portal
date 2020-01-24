@@ -11,15 +11,17 @@ height = 0.86022
 radius = 0.06
 mid_height = 0.84
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.172549, 0.415686, 0.647059, 1 )
 
-[sub_resource type="SphereMesh" id=3]
+[sub_resource type="SphereMesh" id=4]
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=5]
 albedo_texture = ExtResource( 2 )
 
-[node name="Player" type="KinematicBody"]
+[node name="Player" type="KinematicBody" groups=[
+"teleport",
+]]
 transform = Transform( 1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 0.491436, 0 )
 script = ExtResource( 1 )
 
@@ -30,7 +32,7 @@ shape = SubResource( 1 )
 [node name="MeshInstance" type="MeshInstance" parent="Body"]
 layers = 7
 mesh = SubResource( 2 )
-material/0 = SubResource( 5 )
+material/0 = SubResource( 3 )
 
 [node name="CameraAnchor" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.499017, 0 )
@@ -46,5 +48,5 @@ cast_to = Vector3( 0, 0, -100 )
 [node name="Face" type="MeshInstance" parent="CameraAnchor/Camera"]
 transform = Transform( 0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.1, 0, 0, -0.125087 )
 layers = 7
-mesh = SubResource( 3 )
-material/0 = SubResource( 4 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )

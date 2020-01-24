@@ -40,6 +40,32 @@ data = PoolVector3Array( -0.25, 0.25, 0.15, 0.25, 0.25, 0.15, -0.25, -0.25, 0.15
 
 [sub_resource type="PlaneMesh" id=11]
 
+[sub_resource type="Shader" id=12]
+resource_local_to_scene = true
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform sampler2D refl_tx;
+void fragment() {
+	ALBEDO = texture(refl_tx, vec2(1.0 - SCREEN_UV.x, SCREEN_UV.y)).rgb;
+}"
+
+[sub_resource type="ViewportTexture" id=13]
+viewport_path = NodePath("MirrorA/Viewport")
+
+[sub_resource type="ShaderMaterial" id=14]
+resource_local_to_scene = true
+shader = SubResource( 12 )
+shader_param/refl_tx = SubResource( 13 )
+
+[sub_resource type="CapsuleMesh" id=15]
+
+[sub_resource type="CubeMesh" id=16]
+
+[sub_resource type="BoxShape" id=17]
+margin = 0.01
+extents = Vector3( 1, 0.01, 1 )
+
 [sub_resource type="Shader" id=18]
 resource_local_to_scene = true
 code = "shader_type spatial;
@@ -51,38 +77,12 @@ void fragment() {
 }"
 
 [sub_resource type="ViewportTexture" id=19]
-viewport_path = NodePath("MirrorA/Viewport")
+viewport_path = NodePath("PortalHolder/M/Mirror/Viewport")
 
 [sub_resource type="ShaderMaterial" id=20]
 resource_local_to_scene = true
 shader = SubResource( 18 )
 shader_param/refl_tx = SubResource( 19 )
-
-[sub_resource type="CapsuleMesh" id=12]
-
-[sub_resource type="CubeMesh" id=13]
-
-[sub_resource type="BoxShape" id=14]
-margin = 0.01
-extents = Vector3( 1, 0.01, 1 )
-
-[sub_resource type="Shader" id=15]
-resource_local_to_scene = true
-code = "shader_type spatial;
-render_mode unshaded;
-
-uniform sampler2D refl_tx;
-void fragment() {
-	ALBEDO = texture(refl_tx, vec2(1.0 - SCREEN_UV.x, SCREEN_UV.y)).rgb;
-}"
-
-[sub_resource type="ViewportTexture" id=16]
-viewport_path = NodePath("PortalHolder/M/Mirror/Viewport")
-
-[sub_resource type="ShaderMaterial" id=17]
-resource_local_to_scene = true
-shader = SubResource( 15 )
-shader_param/refl_tx = SubResource( 16 )
 
 [node name="Main" type="Spatial"]
 script = ExtResource( 2 )
@@ -219,7 +219,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.61253, 0 )
 process_priority = 1
 layers = 7
 mesh = SubResource( 11 )
-material/0 = SubResource( 20 )
+material/0 = SubResource( 14 )
 
 [node name="CSGMesh" type="CSGMesh" parent="PortalHolder/M1/Mirror"]
 transform = Transform( 1.05, 0, 0, 0, 0.01, 0, 0, 0, 1.05, 0, 0, 0 )
@@ -238,7 +238,7 @@ transform = Transform( -4.21889e-08, -1, -1.57363e-07, -0.258954, 1.62921e-07, -
 [node name="MeshInstance2" type="MeshInstance" parent="PortalHolder/M1/Mirror/DummyCam"]
 transform = Transform( 0.112899, 5.7685e-08, -0.0652244, 1.10017e-08, 0.683651, 4.10359e-08, -0.0652244, 2.15163e-07, -0.112899, -1.47399, 1.90735e-06, -5.49794 )
 visible = false
-mesh = SubResource( 12 )
+mesh = SubResource( 15 )
 material/0 = null
 
 [node name="Viewport" type="Viewport" parent="PortalHolder/M1/Mirror"]
@@ -253,7 +253,7 @@ script = ExtResource( 10 )
 [node name="MeshInstance" type="MeshInstance" parent="PortalHolder/M1/Mirror/Viewport/Camera"]
 transform = Transform( 0.130386, 0, -3.72529e-09, 0, 0.398556, 0, 3.72529e-09, 0, 0.130386, 0, 0, 0 )
 visible = false
-mesh = SubResource( 13 )
+mesh = SubResource( 16 )
 material/0 = null
 
 [node name="RayCast" type="RayCast" parent="PortalHolder/M1/Mirror/Viewport/Camera"]
@@ -263,7 +263,7 @@ cast_to = Vector3( 0, 0, -1000 )
 [node name="Area" type="Area" parent="PortalHolder/M1/Mirror"]
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalHolder/M1/Mirror/Area"]
-shape = SubResource( 14 )
+shape = SubResource( 17 )
 
 [node name="Up" parent="PortalHolder/M1/Mirror" instance=ExtResource( 12 )]
 transform = Transform( 0.25, 0, 0, 0, 0.5, 0, 0, 0, 0.25, 0, 0.442123, 1.19209e-07 )
@@ -274,7 +274,7 @@ viewport_mirror = NodePath("../M1/Mirror/Viewport")
 
 [node name="Mirror" parent="PortalHolder/M" index="0"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
-material/0 = SubResource( 17 )
+material/0 = SubResource( 20 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35227, 6.97224 )

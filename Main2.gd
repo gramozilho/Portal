@@ -74,3 +74,22 @@ func update_cam(main_cam_transform):
 	#mirror_cam_B.update_cull_mask(3)
 	#mirror_A.global_transform = mirror_B.global_transform
 	#mirror_B.global_transform = mirror_A.global_transform
+
+func teleport(body, original_portal):
+	var target_portal
+	if original_portal == $MirrorA:
+		target_portal = $MirrorB
+	else:
+		target_portal = $MirrorA
+	print('Teleport ' + body.name)
+	
+	var target_pos = target_portal.global_transform.origin 
+	print('4 ', target_portal.rotation)
+	var target_orient = target_portal.rotation.normalized()
+	$Player.global_transform.origin = target_pos + Vector3(0, 0, 0.5)#+ target_orient * 2
+	
+	# Rotate
+	var dir_rot = $Player/CameraAnchor.rotation.y + 120 # keep original rot
+	dir_rot += -(1-original_portal.rotation.normalized().dot(target_portal.rotation.normalized()))*90 # account for different portal angles
+	print('a: ', original_portal.rotation.normalized().dot(target_portal.rotation.normalized()))
+	$Player/CameraAnchor.rotate_y(deg2rad(dir_rot))
