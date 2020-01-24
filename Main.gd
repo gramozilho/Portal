@@ -5,6 +5,9 @@ var typeA = true
 var portal_list = []
 #var last_portal_is_A = false
 var portal_X
+var normal_X
+var mirror_X
+var up_X
 var rotation_vec = Vector3()
 
 func _ready():
@@ -18,33 +21,33 @@ func _physics_process(delta):
 		get_tree().reload_current_scene()
 
 func _on_KinematicBody_new_portal(coord, orient, is_portal_A):
+	orient = Vector3(round(orient[0]), round(orient[1]), round(orient[2]))
 	print('1 New portal at: ', coord, orient)
 	if is_portal_A:
 		# Move portal B
-		portal_X = $PortalHolder/Mirror
+		portal_X = $Mirror
+		#mirror_X = $PortalHolder/M/Mirror
+		#normal_X = $PortalHolder/M/Mirror/MeshInstance
+		#up_X = $PortalHolder/Mirror/Up
 	else:
 		# Move portal A
 		portal_X = $PortalHolder/Mirror2
+		normal_X = $PortalHolder/Mirror2/Normal2
+		#up_X = $PortalHolder/Mirror2/Up2
 	
-	portal_X.global_transform = Transform()
-	#orient = Vector3(orient[2], orient[0], orient[1])
-	var normal_vec
-	if (orient[1] > 0.5) or (orient[1] < -0.5):
-		print('Up/down')
-		portal_X.look_at_from_position(coord, coord + orient, Vector3(0, 1, 0))
-		portal_X.global_transform *= Transform.rotated(Vector3(1, 0, 0), -PI/2)
-	elif (orient[0] > 0.5) or (orient[0] < -0.5):
-		print('right')
-		portal_X.look_at_from_position(coord, coord + orient, Vector3(0, 0, 1))
-		portal_X.global_transform *= Transform.rotated(Vector3(1,0,0), -PI/2)
-	else:
-		print('left')
-		normal_vec = Vector3(1,0,0)
-		portal_X.look_at_from_position(coord, coord + orient, normal_vec)
-		portal_X.global_transform *= Transform.rotated(normal_vec, -PI/2)
-		
+	#portal_X.global_transform = Transform()
 	portal_X.global_transform.origin = coord + orient*.001
-	#last_portal_is_A = !last_portal_is_A
+	#portal_X.look_at(portal_X.global_transform.origin - orient, Vector3(0,1,0))
+	self.transform = self.transform.looking_at(portal_X.global_transform.origin - orient, Vector3(0,1,0))
+	
+	#portal_X.global_transform *= Transform(Vector3(-PI/2, 0, 0), Vector3(), Vector3(), Vector3())
+	if orient[1] == -1:
+		print('Ceiling')
+		self.transform = self.transform.looking_at(portal_X.global_transform.origin - orient, Vector3(0,-1,0))
+	
+	
+	
+	#normal_X.look_at(orient, Vector3(0,1,0))
 
 func testee(coord, orient, portal_X):
 	if orient[1] < -0.9:
@@ -134,13 +137,13 @@ func _on_Player_new_portal():
 
 
 func _on_Area_body_entered(body):
-	teleport($PortalHolder/Mirror, $PortalHolder/Mirror2)
+	pass # teleport($PortalHolder/Mirror, $PortalHolder/Mirror2)
 
 func teleport(original_portal, target_portal):
 		var target_pos = target_portal.global_transform.origin 
 		print('4 ', target_portal.rotation)
 		var target_orient = target_portal.rotation.normalized()
-		$Player_v2.global_transform.origin = target_pos + target_orient * 1
+		$Player_v2.global_transform.origin = target_pos + Vector3(0, 0, 0.5)#+ target_orient * 2
 		
 		# Rotate
 		var dir_rot = $Player_v2/CameraAnchor.rotation.y + 120 # keep original rot
@@ -150,4 +153,4 @@ func teleport(original_portal, target_portal):
 
 
 func _on_Area2_body_entered(body):
-	teleport($PortalHolder/Mirror2, $PortalHolder/Mirror)
+	pass #teleport($PortalHolder/Mirror2, $PortalHolder/Mirror)

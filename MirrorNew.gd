@@ -1,10 +1,13 @@
 extends Spatial
 
-onready var mirror_A = $Mirror
+#onready var mirror_A = $M1/Mirror
+onready var mirror_A = $M
 onready var mirror_B = $Mirror2
-onready var dummy_cam_A = $Mirror/DummyCam
+#onready var dummy_cam_A = $M1/Mirror/DummyCam
+onready var dummy_cam_A = $M/Mirror/DummyCam
 onready var dummy_cam_B = $Mirror2/DummyCam
-onready var mirror_cam_A = $Mirror/Viewport/Camera
+#onready var mirror_cam_A = $M1/Mirror/Viewport/Camera
+onready var mirror_cam_A = $M/Mirror/Viewport/Camera
 onready var mirror_cam_B = $Mirror2/Viewport/Camera
 
 func _ready():
@@ -15,13 +18,13 @@ func _ready():
 	pass
 	
 func update_cam(main_cam_transform):
-	$Mirror.scale.y *= -1
+	$M/Mirror.scale.y *= -1
 	$Mirror2.scale.y *= -1
 	
 	dummy_cam_A.global_transform = main_cam_transform
 	dummy_cam_B.global_transform = main_cam_transform
 	
-	$Mirror.scale.y *= -1
+	$M/Mirror.scale.y *= -1
 	$Mirror2.scale.y *= -1
 
 	# Orient cameras
@@ -37,6 +40,7 @@ func update_cam(main_cam_transform):
 	
 	#mirror_cam_A.update_cull_mask(2)
 	#mirror_cam_B.update_cull_mask(3)
+	$M/Mirror.global_transform = mirror_A.global_transform
 
 func update_cam_2(main_cam_transform):
 	#get_tree().call_group("mirrors", "transform_coord", main_cam_transform)
