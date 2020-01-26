@@ -1,6 +1,5 @@
 extends Spatial
 
-const portal = preload("res://Portal.tscn")
 var typeA = true
 var portal_list = []
 #var last_portal_is_A = false

@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="Portal"
 run/main_scene="res://Main2.tscn"
-config/icon="res://icon.png"
+config/icon="res://icon2.png"
 
 [input]
 
@@ -67,4 +67,4 @@ click2={
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://archive/default_env.tres"
