@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Player_v2.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World1.tscn" type="PackedScene" id=2]
@@ -9,15 +9,18 @@
 [ext_resource path="res://Camera.gd" type="Script" id=7]
 [ext_resource path="res://MirrorB.tres" type="Material" id=8]
 
-[sub_resource type="CubeMesh" id=10]
+[sub_resource type="CubeMesh" id=1]
 size = Vector3( 0.1, 0.1, 0.1 )
 
-[sub_resource type="PlaneMesh" id=1]
+[sub_resource type="PlaneMesh" id=2]
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_texture = ExtResource( 4 )
 
-[sub_resource type="CylinderMesh" id=3]
+[sub_resource type="CylinderMesh" id=4]
+
+[sub_resource type="ViewportTexture" id=5]
+viewport_path = NodePath("Control/Camera2/Viewport")
 
 [node name="Main2" type="Spatial" groups=[
 "mirrors",
@@ -25,7 +28,7 @@ albedo_texture = ExtResource( 4 )
 script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 6.33086, 0 )
+transform = Transform( 1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 9.13859, 0 )
 collision_mask = 7
 
 [node name="Camera" parent="Player/CameraAnchor" index="0"]
@@ -33,22 +36,23 @@ script = ExtResource( 7 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="Player/CameraAnchor/Camera" index="2"]
 transform = Transform( 1, 0, 0, 0, -2.44382e-07, -1.5, 0, 1, -1.62921e-07, 0.0994295, -0.212887, 1.13687e-13 )
+visible = false
 layers = 7
-mesh = SubResource( 10 )
+mesh = SubResource( 1 )
 material/0 = null
 
 [node name="World1" parent="." instance=ExtResource( 2 )]
-transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+transform = Transform( 0.3, 0, 0, 0, 0.4, 0, 0, 0, 0.3, 0, 0, 0 )
 
 [node name="Mirrora" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45354, 0 )
 visible = false
-mesh = SubResource( 1 )
-material/0 = SubResource( 2 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Mirrora"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = null
 
 [node name="MirrorA" parent="." instance=ExtResource( 5 )]
@@ -68,6 +72,9 @@ viewport_mirror = NodePath("../MirrorA/Viewport")
 [node name="Camera" parent="MirrorB/Viewport" index="0"]
 cull_mask = 1048572
 
+[node name="MeshInstance" parent="MirrorB/Viewport/Camera" index="1"]
+visible = false
+
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
@@ -80,6 +87,30 @@ modulate = Color( 1, 1, 1, 0.12549 )
 position = Vector2( 500, 300 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 4 )
+
+[node name="Sprite2" type="Sprite" parent="Control"]
+position = Vector2( 154.778, 100.458 )
+scale = Vector2( 32.2773, 21.0163 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 5, 5, 10, 10 )
+
+[node name="Camera2" type="Sprite" parent="Control"]
+position = Vector2( 157.485, 102.715 )
+scale = Vector2( 0.297796, 0.320862 )
+texture = SubResource( 5 )
+flip_v = true
+
+[node name="Viewport" type="Viewport" parent="Control/Camera2"]
+size = Vector2( 1024, 600 )
+
+[node name="Camera" type="Camera" parent="Control/Camera2/Viewport"]
+transform = Transform( -0.642788, -0.383022, 0.663414, 0, 0.866025, 0.5, -0.766044, 0.321394, -0.55667, 3.87713, 9.56593, -4.04678 )
+fov = 91.0788
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.58715, 4.66573 )
+fov = 80.2945
 [connection signal="new_portal" from="Player" to="." method="_on_KinematicBody_new_portal"]
 [connection signal="teleport" from="MirrorA" to="." method="teleport"]
 [connection signal="teleport" from="MirrorB" to="." method="teleport"]
